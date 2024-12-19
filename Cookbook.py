@@ -26,5 +26,24 @@ def read_recipes(file_name):
 
     return cook_book
 
-cook_book = read_recipes('recipes.txt')
-print("cook_book =", cook_book)
+def get_shop_list_by_dishes(dishes, person_count):
+    shop_list = {}
+    cook_book = read_recipes('recipes.txt')
+
+    for dish in dishes:
+        if dish in cook_book:
+            for ingredient in cook_book[dish]:
+                name = ingredient['ingredient_name']
+                if name not in shop_list:
+                    shop_list[name] = {
+                        'measure': ingredient['measure'],
+                        'quantity': ingredient['quantity'] * person_count
+                    }
+                else:
+                    shop_list[name]['quantity'] += ingredient['quantity'] * person_count
+
+    return shop_list
+
+
+shop_list=get_shop_list_by_dishes(['Запеченный картофель', 'Омлет'], 2)
+print(shop_list)
